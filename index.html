@@ -623,27 +623,6 @@ body {
   box-shadow: 0 0 0 3px rgba(148,0,0,0.08);
 }
 
-/* ─── Config Banner ─── */
-.config-banner {
-  background: var(--gold-pale);
-  border: 1px solid var(--gold-light);
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  margin-bottom: 20px;
-  font-size: 0.82rem;
-  color: var(--gray-700);
-  line-height: 1.5;
-}
-
-.config-banner code {
-  background: rgba(0,0,0,0.06);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.78rem;
-}
-
-.config-banner.hidden { display: none; }
-
 /* ─── Responsive ─── */
 @media (max-width: 400px) {
   .header h1 { font-size: 1.6rem; }
@@ -667,10 +646,6 @@ body {
 
 <div class="container">
 
-  <!-- Config Banner (shows if no SCRIPT_URL set) -->
-  <div class="config-banner" id="configBanner">
-    <strong>Setup needed:</strong> Set your Google Apps Script URL in the <code>SCRIPT_URL</code> variable at the bottom of this page's source code. Scores will be saved to your Google Sheet automatically.
-  </div>
 
   <!-- Candidate Info -->
   <section class="info-section">
@@ -805,9 +780,6 @@ function init() {
   // Set today's date
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('interviewDate').value = today;
-
-  // Hide config banner if URL is set
-  if (SCRIPT_URL) document.getElementById('configBanner').classList.add('hidden');
 
   const container = document.getElementById('questionsContainer');
 
