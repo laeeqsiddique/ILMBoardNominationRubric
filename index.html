@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ILM ACADEMY - Board Candidate Interview Rubric 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal: #123768;
+  --teal-dark: #0D2A52;
+  --teal-deep: #091E3D;
+  --gold: #C9A84C;
+  --gold-light: #E8D5A0;
+  --gold-pale: #F5EDD6;
+  --white: #FFFFFF;
+  --gray-50: #F5F5F5;
+  --gray-100: #EFEFEF;
+  --gray-200: #C7C7C7;
+  --gray-300: #AAAAAA;
+  --gray-500: #6B6B6B;
+  --gray-700: #3A3A3A;
+  --gray-900: #292929;
+  --accent-blue: #6893AE;
+  --link-blue: #447594;
+  --exceeds: #123768;
+  --meets: #447594;
+  --somewhat: #C9A84C;
+  --dnm: #940000;
+  --radius: 10px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  font-weight: 400;
+  color: var(--gray-900);
+  background: var(--gray-50);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ─── Islamic Geometric Header ─── */
+.header {
+  background: linear-gradient(160deg, var(--teal-deep) 0%, var(--teal-dark) 40%, var(--teal) 100%);
+  color: var(--white);
+  padding: 28px 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg 60deg,
+      rgba(255,255,255,0.03) 60deg 120deg
+    );
+  background-size: 60px 52px;
+  opacity: 1;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+.header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.header .subtitle {
+  font-size: 0.82rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.gold-line {
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin: 12px auto 0;
+  border-radius: 1px;
+}
+
+/* ─── Main Container ─── */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 16px 100px;
+}
+
+/* ─── Info Fields ─── */
+.info-section {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.info-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--teal-dark);
+  margin-bottom: 16px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 540px) {
+  .field-grid { grid-template-columns: 1fr 1fr; }
+  .field-grid .full-width { grid-column: 1 / -1; }
+}
+
+.field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-500);
+  margin-bottom: 5px;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--gray-900);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(18,55,104,0.12);
+  background: var(--white);
+}
+
+/* ─── Question Cards ─── */
+.question-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+  transition: box-shadow 0.25s, border-color 0.25s;
+}
+
+.question-card.scored {
+  border-color: var(--gold-light);
+}
+
+.question-card.scored .q-header {
+  background: linear-gradient(135deg, rgba(18,55,104,0.04), rgba(201,168,76,0.06));
+}
+
+.q-header {
+  padding: 18px 20px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  transition: background 0.3s;
+}
+
+.q-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: var(--teal);
+  color: var(--white);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 50%;
+}
+
+.q-meta {
+  flex: 1;
+}
+
+.q-points-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--teal-dark);
+  background: rgba(18,55,104,0.08);
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.q-text {
+  padding: 0 20px;
+  font-size: 0.92rem;
+  color: var(--gray-700);
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+/* ─── Rating Buttons ─── */
+.rating-group {
+  padding: 0 20px 4px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 540px) {
+  .rating-group { grid-template-columns: repeat(4, 1fr); }
+}
+
+.rating-btn {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 6px 9px;
+  border-radius: 8px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--gray-50);
+  transition: all 0.2s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rating-btn:active { transform: scale(0.97); }
+
+.rating-btn input { position: absolute; opacity: 0; pointer-events: none; }
+
+.rating-btn .r-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  color: var(--gray-700);
+  margin-bottom: 3px;
+}
+
+.rating-btn .r-range {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--gray-500);
+}
+
+.rating-btn .r-score {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-top: 2px;
+}
+
+/* Exceeds */
+.rating-btn.exceeds.selected {
+  border-color: var(--exceeds);
+  background: rgba(18,55,104,0.07);
+}
+.rating-btn.exceeds.selected .r-label,
+.rating-btn.exceeds.selected .r-score { color: var(--exceeds); }
+
+/* Meets */
+.rating-btn.meets.selected {
+  border-color: var(--meets);
+  background: rgba(68,117,148,0.08);
+}
+.rating-btn.meets.selected .r-label,
+.rating-btn.meets.selected .r-score { color: var(--meets); }
+
+/* Somewhat */
+.rating-btn.somewhat.selected {
+  border-color: var(--somewhat);
+  background: rgba(201,168,76,0.1);
+}
+.rating-btn.somewhat.selected .r-label,
+.rating-btn.somewhat.selected .r-score { color: #8A7228; }
+
+/* DNM */
+.rating-btn.dnm.selected {
+  border-color: var(--dnm);
+  background: rgba(148,0,0,0.06);
+}
+.rating-btn.dnm.selected .r-label,
+.rating-btn.dnm.selected .r-score { color: var(--dnm); }
+
+/* ─── Score Display per Q ─── */
+.q-score-display {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+}
+
+.q-score-display .score-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--teal-dark);
+}
+
+/* ─── Inline Score Editor ─── */
+.score-editor {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px 6px;
+}
+
+.score-editor.visible { display: flex; }
+
+.score-editor-label {
+  font-size: 0.78rem;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+
+.score-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score-input-wrap input[type="number"] {
+  width: 60px;
+  padding: 7px 8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-align: center;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--teal-dark);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+}
+
+.score-input-wrap input[type="number"]::-webkit-outer-spin-button,
+.score-input-wrap input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.score-input-wrap input[type="number"]:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(18,55,104,0.12);
+  background: var(--white);
+}
+
+.score-input-wrap input[type="number"].out-of-range {
+  border-color: var(--dnm);
+  box-shadow: 0 0 0 3px rgba(148,0,0,0.1);
+}
+
+.score-input-max {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--gray-300);
+  font-weight: 500;
+}
+
+.score-range-hint {
+  font-size: 0.7rem;
+  color: var(--gray-500);
+  margin-left: 4px;
+}
+
+/* ─── Comments Toggle ─── */
+.comments-toggle {
+  padding: 0 20px 14px;
+}
+
+.comments-toggle button {
+  background: none;
+  border: none;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.comments-toggle button:hover { color: var(--teal); }
+
+.comments-toggle .arrow {
+  display: inline-block;
+  transition: transform 0.2s;
+  font-size: 0.65rem;
+}
+
+.comments-toggle button.open .arrow { transform: rotate(90deg); }
+
+.comment-area {
+  display: none;
+  padding: 0 20px 16px;
+}
+
+.comment-area.visible { display: block; }
+
+.comment-area textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--gray-900);
+  resize: vertical;
+  min-height: 70px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.comment-area textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(18,55,104,0.12);
+  background: var(--white);
+}
+
+/* ─── Sticky Total Bar ─── */
+.total-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+  padding: 12px 16px;
+}
+
+.total-bar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.total-score-area {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.total-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-500);
+}
+
+.total-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: var(--teal-dark);
+  line-height: 1;
+}
+
+.total-max {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--gray-300);
+  font-weight: 500;
+}
+
+.progress-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.submit-btn {
+  padding: 11px 28px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.submit-btn:hover { box-shadow: 0 4px 14px rgba(18,55,104,0.3); transform: translateY(-1px); }
+.submit-btn:active { transform: translateY(0); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.submit-btn .spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.submit-btn.loading .spinner { display: block; }
+.submit-btn.loading .btn-text { display: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Toast ─── */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 200;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 90%;
+  text-align: center;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.toast.success {
+  background: var(--teal-dark);
+  color: var(--white);
+}
+
+.toast.error {
+  background: #940000;
+  color: var(--white);
+}
+
+/* ─── Answered count ─── */
+.answered-count {
+  font-size: 0.7rem;
+  color: var(--gray-500);
+}
+
+/* ─── Validation ─── */
+.field.invalid input {
+  border-color: var(--dnm);
+  box-shadow: 0 0 0 3px rgba(148,0,0,0.1);
+}
+
+.question-card.invalid {
+  border-color: var(--dnm);
+  box-shadow: 0 0 0 3px rgba(148,0,0,0.08);
+}
+
+/* ─── Config Banner ─── */
+.config-banner {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-light);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 0.82rem;
+  color: var(--gray-700);
+  line-height: 1.5;
+}
+
+.config-banner code {
+  background: rgba(0,0,0,0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+.config-banner.hidden { display: none; }
+
+/* ─── Responsive ─── */
+@media (max-width: 400px) {
+  .header h1 { font-size: 1.6rem; }
+  .q-text { font-size: 0.86rem; }
+  .rating-btn { padding: 8px 4px 7px; }
+  .rating-btn .r-label { font-size: 0.67rem; }
+  .submit-btn { padding: 11px 18px; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <h1>ILM ACADEMY</h1>
+    <div class="subtitle">Governing Board &middot; Candidate Interview Rubric 2026</div>
+    <div class="gold-line"></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Config Banner (shows if no SCRIPT_URL set) -->
+  <div class="config-banner" id="configBanner">
+    <strong>Setup needed:</strong> Set your Google Apps Script URL in the <code>SCRIPT_URL</code> variable at the bottom of this page's source code. Scores will be saved to your Google Sheet automatically.
+  </div>
+
+  <!-- Candidate Info -->
+  <section class="info-section">
+    <h2>Interview Details</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="candidateName">Candidate Name *</label>
+        <input type="text" id="candidateName" placeholder="Full name" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="interviewDate">Interview Date *</label>
+        <input type="date" id="interviewDate">
+      </div>
+      <div class="field">
+        <label for="committeeMember">Committee Member *</label>
+        <input type="text" id="committeeMember" placeholder="Your name" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="role">Role (Optional)</label>
+        <input type="text" id="role" placeholder="e.g. Chair, Secretary" autocomplete="off">
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions rendered by JS -->
+  <div id="questionsContainer"></div>
+
+</div>
+
+<!-- Sticky Total Bar -->
+<div class="total-bar">
+  <div class="total-bar-inner">
+    <div>
+      <div class="total-score-area">
+        <span class="total-label">Total</span>
+        <span class="total-number" id="totalScore">0</span>
+        <span class="total-max">/ 100</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="answered-count" id="answeredCount">0 of 8 scored</div>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+      <span class="btn-text">Submit Evaluation</span>
+      <span class="spinner"></span>
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CONFIGURE THIS: Your Google Apps Script Web App URL
+// ═══════════════════════════════════════════════════════
+const SCRIPT_URL = '';
+// ═══════════════════════════════════════════════════════
+
+const QUESTIONS = [
+  {
+    num: 1, maxPts: 15,
+    text: 'Describe how you incorporate Islam in your life. What formal or informal Islamic learning have you pursued?',
+    scores: { exceeds: 15, meets: 11, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '13\u201315', meets: '9\u201312', somewhat: '5\u20138', dnm: '0\u20134' },
+    bounds: { exceeds: [13,15], meets: [9,12], somewhat: [5,8], dnm: [0,4] }
+  },
+  {
+    num: 2, maxPts: 10,
+    text: "What\u2019s your vision of an ideal graduate from ILM Academy?",
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 3, maxPts: 15,
+    text: 'The corporate/academic environment is very different from a non-profit, Islamic, volunteer-powered community board. What differences and challenges do you anticipate, and how do you plan to operate effectively despite them?',
+    scores: { exceeds: 15, meets: 11, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '13\u201315', meets: '9\u201312', somewhat: '5\u20138', dnm: '0\u20134' },
+    bounds: { exceeds: [13,15], meets: [9,12], somewhat: [5,8], dnm: [0,4] }
+  },
+  {
+    num: 4, maxPts: 15,
+    text: 'How do you hold yourself and other board members, who are volunteers, accountable? (a) How do you motivate other volunteers? (b) What do you do when others are not pulling their weight?',
+    scores: { exceeds: 15, meets: 11, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '13\u201315', meets: '9\u201312', somewhat: '5\u20138', dnm: '0\u20134' },
+    bounds: { exceeds: [13,15], meets: [9,12], somewhat: [5,8], dnm: [0,4] }
+  },
+  {
+    num: 5, maxPts: 10,
+    text: 'A complicated topic is discussed on the board and there does not seem to be a clear path forward. You feel the need to consult someone external whose judgment you trust. How would you approach this situation?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 6, maxPts: 10,
+    text: 'How would you increase parental involvement and volunteerism at ILM?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 7, maxPts: 10,
+    text: 'Describe a significant challenge or failure you experienced. What did you learn, and how has it changed how you approach similar situations now?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 8, maxPts: 15,
+    text: 'What does an ownership mindset mean in a volunteer organization?',
+    scores: { exceeds: 15, meets: 11, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '13\u201315', meets: '9\u201312', somewhat: '5\u20138', dnm: '0\u20134' },
+    bounds: { exceeds: [13,15], meets: [9,12], somewhat: [5,8], dnm: [0,4] }
+  }
+];
+
+const RATING_LABELS = {
+  exceeds: 'Exceeds',
+  meets: 'Meets',
+  somewhat: 'Somewhat',
+  dnm: 'Does Not Meet'
+};
+
+const RATING_KEYS = ['exceeds', 'meets', 'somewhat', 'dnm'];
+const RATING_CLASSES = { exceeds: 'exceeds', meets: 'meets', somewhat: 'somewhat', dnm: 'dnm' };
+
+// State
+const state = {};
+
+function init() {
+  // Set today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('interviewDate').value = today;
+
+  // Hide config banner if URL is set
+  if (SCRIPT_URL) document.getElementById('configBanner').classList.add('hidden');
+
+  const container = document.getElementById('questionsContainer');
+
+  QUESTIONS.forEach(q => {
+    state[q.num] = { rating: null, score: 0, comments: '' };
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `card-${q.num}`;
+
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-number">${q.num}</span>
+        <div class="q-meta"></div>
+        <span class="q-points-badge">${q.maxPts} pts</span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="rating-group" id="rg-${q.num}">
+        ${RATING_KEYS.map(key => `
+          <label class="rating-btn ${RATING_CLASSES[key]}" data-q="${q.num}" data-key="${key}">
+            <input type="radio" name="q${q.num}" value="${key}">
+            <span class="r-label">${RATING_LABELS[key]}</span>
+            <span class="r-range">${q.ranges[key]}</span>
+            <span class="r-score">${q.scores[key]}</span>
+          </label>
+        `).join('')}
+      </div>
+      <div class="score-editor" id="editor-${q.num}">
+        <span class="score-editor-label">Adjust score:</span>
+        <div class="score-input-wrap">
+          <input type="number" id="scoreInput-${q.num}" inputmode="numeric" pattern="[0-9]*"
+            min="0" max="${q.maxPts}" step="1"
+            onchange="onScoreInput(${q.num})" oninput="onScoreInput(${q.num})">
+          <span class="score-input-max">/ ${q.maxPts}</span>
+        </div>
+        <span class="score-range-hint" id="rangeHint-${q.num}"></span>
+      </div>
+      <div class="q-score-display">
+        Score: <span class="score-val" id="qscore-${q.num}">-- / ${q.maxPts}</span>
+      </div>
+      <div class="comments-toggle">
+        <button onclick="toggleComments(${q.num}, this)" aria-label="Toggle comments">
+          <span class="arrow">&#9654;</span> Add comments
+        </button>
+      </div>
+      <div class="comment-area" id="comments-${q.num}">
+        <textarea placeholder="Optional notes for this question..." oninput="state[${q.num}].comments=this.value"></textarea>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  // Attach click handlers to rating buttons
+  document.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const qNum = parseInt(this.dataset.q);
+      const key = this.dataset.key;
+      selectRating(qNum, key);
+    });
+  });
+}
+
+function selectRating(qNum, key) {
+  const q = QUESTIONS[qNum - 1];
+  const [lo, hi] = q.bounds[key];
+  const defaultScore = q.scores[key];
+
+  state[qNum].rating = RATING_LABELS[key];
+  state[qNum].ratingKey = key;
+  state[qNum].score = defaultScore;
+
+  // Update button states
+  const group = document.getElementById(`rg-${qNum}`);
+  group.querySelectorAll('.rating-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.key === key);
+  });
+
+  // Show score editor with the default value and range
+  const editor = document.getElementById(`editor-${qNum}`);
+  editor.classList.add('visible');
+  const input = document.getElementById(`scoreInput-${qNum}`);
+  input.value = defaultScore;
+  input.min = lo;
+  input.max = hi;
+  input.classList.remove('out-of-range');
+  document.getElementById(`rangeHint-${qNum}`).textContent = `(${lo}\u2013${hi})`;
+
+  // Update score display
+  document.getElementById(`qscore-${qNum}`).textContent = `${defaultScore} / ${q.maxPts}`;
+
+  // Mark card as scored
+  document.getElementById(`card-${qNum}`).classList.add('scored');
+  document.getElementById(`card-${qNum}`).classList.remove('invalid');
+
+  updateTotal();
+}
+
+function onScoreInput(qNum) {
+  const q = QUESTIONS[qNum - 1];
+  const key = state[qNum].ratingKey;
+  if (!key) return;
+
+  const input = document.getElementById(`scoreInput-${qNum}`);
+  const [lo, hi] = q.bounds[key];
+  let val = parseInt(input.value, 10);
+
+  // Show out-of-range styling but don't block typing
+  if (isNaN(val) || val < lo || val > hi) {
+    input.classList.add('out-of-range');
+    if (!isNaN(val)) {
+      // Clamp on blur-like behavior: still update state with clamped value
+      val = Math.max(lo, Math.min(hi, val));
+      state[qNum].score = val;
+    }
+  } else {
+    input.classList.remove('out-of-range');
+    state[qNum].score = val;
+  }
+
+  // Update score display
+  if (!isNaN(val)) {
+    const clamped = Math.max(lo, Math.min(hi, val));
+    state[qNum].score = clamped;
+    document.getElementById(`qscore-${qNum}`).textContent = `${clamped} / ${q.maxPts}`;
+    // Also snap the input if they typed out of range (on change event)
+    if (val !== clamped && document.activeElement !== input) {
+      input.value = clamped;
+      input.classList.remove('out-of-range');
+    }
+  }
+
+  updateTotal();
+}
+
+// Clamp value on blur so we don't leave invalid numbers
+document.addEventListener('focusout', function(e) {
+  if (e.target.matches('input[id^="scoreInput-"]')) {
+    const qNum = parseInt(e.target.id.replace('scoreInput-', ''), 10);
+    const q = QUESTIONS[qNum - 1];
+    const key = state[qNum].ratingKey;
+    if (!key) return;
+    const [lo, hi] = q.bounds[key];
+    let val = parseInt(e.target.value, 10);
+    if (isNaN(val)) val = q.scores[key]; // revert to default
+    val = Math.max(lo, Math.min(hi, val));
+    e.target.value = val;
+    e.target.classList.remove('out-of-range');
+    state[qNum].score = val;
+    document.getElementById(`qscore-${qNum}`).textContent = `${val} / ${q.maxPts}`;
+    updateTotal();
+  }
+});
+
+function updateTotal() {
+  let total = 0;
+  let answered = 0;
+  QUESTIONS.forEach(q => {
+    total += state[q.num].score;
+    if (state[q.num].rating) answered++;
+  });
+  document.getElementById('totalScore').textContent = total;
+  document.getElementById('progressFill').style.width = `${total}%`;
+  document.getElementById('answeredCount').textContent = `${answered} of 8 scored`;
+}
+
+function toggleComments(qNum, btn) {
+  const area = document.getElementById(`comments-${qNum}`);
+  const isVisible = area.classList.contains('visible');
+  area.classList.toggle('visible');
+  btn.classList.toggle('open');
+  btn.querySelector('.arrow').style.transform = isVisible ? '' : 'rotate(90deg)';
+  if (!isVisible) area.querySelector('textarea').focus();
+}
+
+function showToast(message, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+function validate() {
+  let valid = true;
+
+  // Required fields
+  ['candidateName', 'interviewDate', 'committeeMember'].forEach(id => {
+    const field = document.getElementById(id);
+    const parent = field.closest('.field');
+    if (!field.value.trim()) {
+      parent.classList.add('invalid');
+      valid = false;
+      if (!document.querySelector('.field.invalid')) field.focus();
+    } else {
+      parent.classList.remove('invalid');
+    }
+  });
+
+  // All questions must be scored
+  QUESTIONS.forEach(q => {
+    const card = document.getElementById(`card-${q.num}`);
+    if (!state[q.num].rating) {
+      card.classList.add('invalid');
+      valid = false;
+    } else {
+      card.classList.remove('invalid');
+    }
+  });
+
+  if (!valid) {
+    showToast('Please fill in all required fields and score all questions.', 'error');
+    // Scroll to first invalid
+    const first = document.querySelector('.invalid');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  return valid;
+}
+
+async function submitForm() {
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const payload = {
+    candidateName: document.getElementById('candidateName').value.trim(),
+    interviewDate: document.getElementById('interviewDate').value,
+    committeeMember: document.getElementById('committeeMember').value.trim(),
+    role: document.getElementById('role').value.trim(),
+    questions: QUESTIONS.map(q => ({
+      number: q.num,
+      maxPoints: q.maxPts,
+      rating: state[q.num].rating,
+      score: state[q.num].score,
+      comments: state[q.num].comments
+    })),
+    totalScore: QUESTIONS.reduce((sum, q) => sum + state[q.num].score, 0),
+    submittedAt: new Date().toISOString()
+  };
+
+  if (!SCRIPT_URL) {
+    // Demo mode: log to console
+    console.log('Rubric data (no SCRIPT_URL configured):', payload);
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      showToast('Demo mode: data logged to console. Set SCRIPT_URL to save to Google Sheets.', 'error');
+    }, 800);
+    return;
+  }
+
+  try {
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showToast('Evaluation submitted successfully!', 'success');
+
+    // Offer to reset
+    setTimeout(() => {
+      if (confirm('Evaluation submitted. Start a new evaluation?')) resetForm();
+    }, 500);
+
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showToast('Submission failed. Please try again.', 'error');
+    console.error(err);
+  }
+}
+
+function resetForm() {
+  document.getElementById('candidateName').value = '';
+  document.getElementById('role').value = '';
+  // Keep date and committee member name
+  QUESTIONS.forEach(q => {
+    state[q.num] = { rating: null, ratingKey: null, score: 0, comments: '' };
+    const card = document.getElementById(`card-${q.num}`);
+    card.classList.remove('scored', 'invalid');
+    card.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById(`qscore-${q.num}`).textContent = `-- / ${q.maxPts}`;
+    document.getElementById(`editor-${q.num}`).classList.remove('visible');
+    document.getElementById(`scoreInput-${q.num}`).value = '';
+    const area = document.getElementById(`comments-${q.num}`);
+    area.classList.remove('visible');
+    area.querySelector('textarea').value = '';
+  });
+  updateTotal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+init();
+</script>
+</body>
+</html>
