@@ -18,30 +18,80 @@
 
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheetName = 'Responses';
+    var sheet = ss.getSheetByName(sheetName);
+
+    // Create the sheet if it doesn't exist
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+    }
+
     var data = JSON.parse(e.postData.contents);
 
-    // Create header row if sheet is empty
+    var headers = [
+      'Timestamp',
+      'Candidate Name',
+      'Interview Date',
+      'Committee Member',
+      'Role',
+      'Q1 Rating', 'Q1 Score',
+      'Q2 Rating', 'Q2 Score',
+      'Q3 Rating', 'Q3 Score',
+      'Q4 Rating', 'Q4 Score',
+      'Q5 Rating', 'Q5 Score',
+      'Q6 Rating', 'Q6 Score',
+      'Q7 Rating', 'Q7 Score',
+      'Q8 Rating', 'Q8 Score',
+      'Total Score',
+      'Q1 Comments', 'Q2 Comments', 'Q3 Comments', 'Q4 Comments',
+      'Q5 Comments', 'Q6 Comments', 'Q7 Comments', 'Q8 Comments'
+    ];
+
+    // Build a map of header name -> value for this submission
+    var dataMap = {
+      'Timestamp': data.submittedAt || new Date().toISOString(),
+      'Candidate Name': data.candidateName || '',
+      'Interview Date': data.interviewDate || '',
+      'Committee Member': data.committeeMember || '',
+      'Role': data.role || '',
+      'Total Score': data.totalScore || 0
+    };
+    for (var i = 0; i < 8; i++) {
+      var q = data.questions[i];
+      dataMap['Q' + (i + 1) + ' Rating'] = q.rating || '';
+      dataMap['Q' + (i + 1) + ' Score'] = q.score || 0;
+      dataMap['Q' + (i + 1) + ' Comments'] = q.comments || '';
+    }
+
+    // Ensure header row exists and is correct
+    var needsHeaders = false;
+    var existingHeaders = [];
+
     if (sheet.getLastRow() === 0) {
-      var headers = [
-        'Timestamp',
-        'Candidate Name',
-        'Interview Date',
-        'Committee Member',
-        'Role',
-        'Q1 Rating', 'Q1 Score',
-        'Q2 Rating', 'Q2 Score',
-        'Q3 Rating', 'Q3 Score',
-        'Q4 Rating', 'Q4 Score',
-        'Q5 Rating', 'Q5 Score',
-        'Q6 Rating', 'Q6 Score',
-        'Q7 Rating', 'Q7 Score',
-        'Q8 Rating', 'Q8 Score',
-        'Total Score',
-        'Q1 Comments', 'Q2 Comments', 'Q3 Comments', 'Q4 Comments',
-        'Q5 Comments', 'Q6 Comments', 'Q7 Comments', 'Q8 Comments'
-      ];
-      sheet.appendRow(headers);
+      needsHeaders = true;
+    } else {
+      var lastCol = sheet.getLastColumn();
+      if (lastCol > 0) {
+        existingHeaders = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+      }
+      // Check if first row looks like a header (contains at least one known header name)
+      var knownHeaders = ['Timestamp', 'Candidate Name', 'Total Score'];
+      var hasAnyHeader = existingHeaders.some(function(h) {
+        return knownHeaders.indexOf(String(h).trim()) !== -1;
+      });
+      if (!hasAnyHeader) {
+        needsHeaders = true;
+      }
+    }
+
+    if (needsHeaders) {
+      // No valid headers found — insert canonical headers
+      if (sheet.getLastRow() > 0) {
+        sheet.insertRowBefore(1);
+      }
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+      existingHeaders = headers;
 
       // Format header row
       var headerRange = sheet.getRange(1, 1, 1, headers.length);
@@ -51,27 +101,35 @@ function doPost(e) {
       sheet.setFrozenRows(1);
     }
 
-    // Build row data
-    var row = [
-      data.submittedAt || new Date().toISOString(),
-      data.candidateName || '',
-      data.interviewDate || '',
-      data.committeeMember || '',
-      data.role || ''
-    ];
-
-    // Add question scores
-    for (var i = 0; i < 8; i++) {
-      var q = data.questions[i];
-      row.push(q.rating || '');
-      row.push(q.score || 0);
+    // Check for any missing headers and append them
+    var headerIndex = {};
+    for (var c = 0; c < existingHeaders.length; c++) {
+      headerIndex[String(existingHeaders[c]).trim()] = c;
+    }
+    var nextCol = existingHeaders.length;
+    for (var h = 0; h < headers.length; h++) {
+      if (!(headers[h] in headerIndex)) {
+        // This expected header is missing — add it at the end
+        sheet.getRange(1, nextCol + 1).setValue(headers[h]);
+        var cell = sheet.getRange(1, nextCol + 1);
+        cell.setFontWeight('bold');
+        cell.setBackground('#065A5E');
+        cell.setFontColor('#FFFFFF');
+        headerIndex[headers[h]] = nextCol;
+        nextCol++;
+      }
     }
 
-    row.push(data.totalScore || 0);
-
-    // Add comments at the end
-    for (var i = 0; i < 8; i++) {
-      row.push(data.questions[i].comments || '');
+    // Build row array mapped to actual column positions
+    var totalCols = nextCol;
+    var row = new Array(totalCols);
+    for (var c = 0; c < totalCols; c++) {
+      row[c] = '';
+    }
+    for (var headerName in dataMap) {
+      if (headerName in headerIndex) {
+        row[headerIndex[headerName]] = dataMap[headerName];
+      }
     }
 
     sheet.appendRow(row);
