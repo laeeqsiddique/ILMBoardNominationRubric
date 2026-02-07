@@ -623,6 +623,104 @@ body {
   box-shadow: 0 0 0 3px rgba(148,0,0,0.08);
 }
 
+/* ─── Section Picker ─── */
+.section-picker {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.section-picker h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--teal-dark);
+  margin-bottom: 6px;
+}
+
+.section-picker .picker-subtitle {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  margin-bottom: 18px;
+}
+
+.picker-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 540px) {
+  .picker-options { grid-template-columns: 1fr 1fr; }
+}
+
+.picker-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.picker-option:hover {
+  border-color: var(--teal);
+  background: rgba(18,55,104,0.03);
+}
+
+.picker-option.checked {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+
+.picker-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--teal);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.picker-option-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.picker-option-desc {
+  font-size: 0.72rem;
+  color: var(--gray-500);
+  font-weight: 400;
+}
+
+.picker-start-btn {
+  padding: 12px 32px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+}
+
+.picker-start-btn:hover { box-shadow: 0 4px 14px rgba(18,55,104,0.3); transform: translateY(-1px); }
+.picker-start-btn:active { transform: translateY(0); }
+.picker-start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
 /* ─── Tab Navigation ─── */
 .tab-nav {
   display: flex;
@@ -766,9 +864,46 @@ body {
 <div class="container">
 
 
-  <!-- Candidate Info -->
-  <section class="info-section">
-    <h2>Interview Details</h2>
+  <!-- Section Picker -->
+  <div class="section-picker" id="sectionPicker">
+    <h2>Select Sections to Complete</h2>
+    <p class="picker-subtitle">Choose which sections you need to fill out for this candidate.</p>
+    <div class="picker-options">
+      <label class="picker-option" onclick="togglePickerOption(this)">
+        <input type="checkbox" value="interview">
+        <div>
+          <div class="picker-option-label">Interview</div>
+          <div class="picker-option-desc">8 questions &middot; 100 pts</div>
+        </div>
+      </label>
+      <label class="picker-option" onclick="togglePickerOption(this)">
+        <input type="checkbox" value="scenario">
+        <div>
+          <div class="picker-option-label">Scenario</div>
+          <div class="picker-option-desc">1 scenario &middot; 10 pts</div>
+        </div>
+      </label>
+      <label class="picker-option" onclick="togglePickerOption(this)">
+        <input type="checkbox" value="preinterview">
+        <div>
+          <div class="picker-option-label">Pre-Interview</div>
+          <div class="picker-option-desc">6 questions &middot; 60 pts</div>
+        </div>
+      </label>
+      <label class="picker-option" onclick="togglePickerOption(this)">
+        <input type="checkbox" value="followup">
+        <div>
+          <div class="picker-option-label">Follow-Up</div>
+          <div class="picker-option-desc">6 questions &middot; 60 pts</div>
+        </div>
+      </label>
+    </div>
+    <button class="picker-start-btn" id="pickerStartBtn" disabled onclick="startSections()">Select at least one section</button>
+  </div>
+
+  <!-- Candidate Info (hidden until sections chosen) -->
+  <section class="info-section" id="infoSection" style="display:none;">
+    <h2>Evaluation Details</h2>
     <div class="field-grid">
       <div class="field">
         <label for="candidateName">Candidate Name *</label>
@@ -789,16 +924,16 @@ body {
     </div>
   </section>
 
-  <!-- Tab Navigation -->
-  <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="interview" onclick="switchTab('interview')">Interview</button>
+  <!-- Tab Navigation (hidden until sections chosen) -->
+  <nav class="tab-nav" id="tabNav" style="display:none;">
+    <button class="tab-btn" data-tab="interview" onclick="switchTab('interview')">Interview</button>
     <button class="tab-btn" data-tab="scenario" onclick="switchTab('scenario')">Scenario</button>
     <button class="tab-btn" data-tab="preinterview" onclick="switchTab('preinterview')">Pre-Interview</button>
     <button class="tab-btn" data-tab="followup" onclick="switchTab('followup')">Follow-Up</button>
   </nav>
 
   <!-- Tab 1: Interview (existing) -->
-  <div class="tab-panel active" id="tab-interview">
+  <div class="tab-panel" id="tab-interview">
     <div id="questionsContainer"></div>
   </div>
 
@@ -824,7 +959,7 @@ body {
 </div>
 
 <!-- Sticky Total Bar: Interview -->
-<div class="total-bar" id="totalBar-interview">
+<div class="total-bar" id="totalBar-interview" style="display:none;">
   <div class="total-bar-inner">
     <div>
       <div class="total-score-area">
@@ -1072,20 +1207,73 @@ const RATING_CLASSES = { exceeds: 'exceeds', meets: 'meets', somewhat: 'somewhat
 
 // ─── Per-section State ───
 const sectionState = {};
-let activeTab = 'interview';
+let activeTab = null;
+let activeSections = [];
+
+// ─── Section Picker ───
+function togglePickerOption(label) {
+  // Let the checkbox toggle naturally, then update styling
+  setTimeout(() => {
+    const cb = label.querySelector('input[type="checkbox"]');
+    label.classList.toggle('checked', cb.checked);
+    updatePickerButton();
+  }, 0);
+}
+
+function updatePickerButton() {
+  const checked = document.querySelectorAll('.picker-option input:checked');
+  const btn = document.getElementById('pickerStartBtn');
+  if (checked.length > 0) {
+    btn.disabled = false;
+    const names = Array.from(checked).map(cb => {
+      const label = cb.closest('.picker-option').querySelector('.picker-option-label').textContent;
+      return label;
+    });
+    btn.textContent = `Start: ${names.join(', ')}`;
+  } else {
+    btn.disabled = true;
+    btn.textContent = 'Select at least one section';
+  }
+}
+
+function startSections() {
+  const checked = document.querySelectorAll('.picker-option input:checked');
+  activeSections = Array.from(checked).map(cb => cb.value);
+
+  // Hide picker
+  document.getElementById('sectionPicker').style.display = 'none';
+
+  // Show info and tabs
+  document.getElementById('infoSection').style.display = '';
+  document.getElementById('tabNav').style.display = '';
+
+  // Show only selected tab buttons, hide others
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (activeSections.includes(btn.dataset.tab)) {
+      btn.style.display = '';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+
+  // Activate the first selected tab
+  switchTab(activeSections[0]);
+}
 
 // ─── Tab Switching ───
 function switchTab(tabName) {
   activeTab = tabName;
   // Update tab buttons
   document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tab === tabName);
+    if (activeSections.includes(btn.dataset.tab)) {
+      btn.classList.toggle('active', btn.dataset.tab === tabName);
+    }
   });
   // Update tab panels
   document.querySelectorAll('.tab-panel').forEach(panel => {
     panel.classList.toggle('active', panel.id === 'tab-' + tabName);
   });
-  // Update total bars
+  // Update total bars — only show active tab's bar
   Object.keys(SECTIONS).forEach(key => {
     document.getElementById('totalBar-' + key).style.display = (key === tabName) ? '' : 'none';
   });
