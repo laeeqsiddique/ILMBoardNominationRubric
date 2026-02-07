@@ -1591,7 +1591,7 @@ async function submitSection(section) {
     showToast('Evaluation submitted successfully!', 'success');
 
     setTimeout(() => {
-      if (confirm('Evaluation submitted. Reset this section for a new evaluation?')) resetSection(section);
+      if (confirm('Evaluation submitted. Return to section selection?')) resetToPickerScreen();
     }, 500);
 
   } catch (err) {
@@ -1635,6 +1635,36 @@ function resetSection(section) {
   });
 
   updateTotal(section);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Reset to Picker Screen ───
+function resetToPickerScreen() {
+  // Reset all sections
+  Object.keys(SECTIONS).forEach(section => resetSection(section));
+
+  // Clear candidate info (keep committee member and date)
+  document.getElementById('candidateName').value = '';
+  document.getElementById('role').value = '';
+
+  // Hide tabs, info, total bars
+  document.getElementById('infoSection').style.display = 'none';
+  document.getElementById('tabNav').style.display = 'none';
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  Object.keys(SECTIONS).forEach(key => {
+    document.getElementById('totalBar-' + key).style.display = 'none';
+  });
+
+  // Reset picker checkboxes
+  document.querySelectorAll('.picker-option input').forEach(cb => { cb.checked = false; });
+  document.querySelectorAll('.picker-option').forEach(opt => opt.classList.remove('checked'));
+  updatePickerButton();
+
+  // Show picker
+  document.getElementById('sectionPicker').style.display = '';
+  activeTab = null;
+  activeSections = [];
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
