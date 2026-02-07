@@ -880,21 +880,21 @@ body {
         <input type="checkbox" value="scenario">
         <div>
           <div class="picker-option-label">Scenario</div>
-          <div class="picker-option-desc">1 scenario &middot; 10 pts</div>
+          <div class="picker-option-desc">1 scenario &middot; 100 pts</div>
         </div>
       </label>
       <label class="picker-option" onclick="togglePickerOption(this)">
         <input type="checkbox" value="preinterview">
         <div>
           <div class="picker-option-label">Pre-Interview</div>
-          <div class="picker-option-desc">6 questions &middot; 60 pts</div>
+          <div class="picker-option-desc">6 questions &middot; 100 pts</div>
         </div>
       </label>
       <label class="picker-option" onclick="togglePickerOption(this)">
         <input type="checkbox" value="followup">
         <div>
           <div class="picker-option-label">Follow-Up</div>
-          <div class="picker-option-desc">6 questions &middot; 60 pts</div>
+          <div class="picker-option-desc">Up to 10 questions &middot; 100 pts &middot; Optional</div>
         </div>
       </label>
     </div>
@@ -984,7 +984,7 @@ body {
       <div class="total-score-area">
         <span class="total-label">Total</span>
         <span class="total-number" id="totalScore-scenario">0</span>
-        <span class="total-max">/ 10</span>
+        <span class="total-max">/ 100</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill-scenario"></div></div>
       <div class="answered-count" id="answeredCount-scenario">0 of 1 scored</div>
@@ -1003,7 +1003,7 @@ body {
       <div class="total-score-area">
         <span class="total-label">Total</span>
         <span class="total-number" id="totalScore-preinterview">0</span>
-        <span class="total-max">/ 60</span>
+        <span class="total-max">/ 100</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill-preinterview"></div></div>
       <div class="answered-count" id="answeredCount-preinterview">0 of 6 scored</div>
@@ -1022,10 +1022,10 @@ body {
       <div class="total-score-area">
         <span class="total-label">Total</span>
         <span class="total-number" id="totalScore-followup">0</span>
-        <span class="total-max">/ 60</span>
+        <span class="total-max">/ 100</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill-followup"></div></div>
-      <div class="answered-count" id="answeredCount-followup">0 of 6 scored</div>
+      <div class="answered-count" id="answeredCount-followup">0 of 10 scored</div>
     </div>
     <button class="submit-btn" id="submitBtn-followup" onclick="submitSection('followup')">
       <span class="btn-text">Submit Follow-Up</span>
@@ -1107,56 +1107,56 @@ const INTERVIEW_QUESTIONS = [
 
 const SCENARIO_QUESTIONS = [
   {
-    num: 1, maxPts: 10,
+    num: 1, maxPts: 100,
     text: 'Rate the candidate\u2019s response to the discussion scenario.',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 100, meets: 80, somewhat: 50, dnm: 0 },
+    ranges: { exceeds: '90\u2013100', meets: '70\u201389', somewhat: '40\u201369', dnm: '0\u201339' },
+    bounds: { exceeds: [90,100], meets: [70,89], somewhat: [40,69], dnm: [0,39] }
   }
 ];
 
 const PREINTERVIEW_QUESTIONS = [
   {
-    num: 1, maxPts: 10,
+    num: 1, maxPts: 17,
     text: 'Describe your volunteering experience. Where did you volunteer? In what capacity? Tell us about your volunteering experience at ILM?',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 17, meets: 12, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '15\u201317', meets: '11\u201314', somewhat: '6\u201310', dnm: '0\u20135' },
+    bounds: { exceeds: [15,17], meets: [11,14], somewhat: [6,10], dnm: [0,5] }
   },
   {
-    num: 2, maxPts: 10,
+    num: 2, maxPts: 17,
     text: 'Which of your personal traits and skills are most relevant for you as a board member?',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 17, meets: 12, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '15\u201317', meets: '11\u201314', somewhat: '6\u201310', dnm: '0\u20135' },
+    bounds: { exceeds: [15,17], meets: [11,14], somewhat: [6,10], dnm: [0,5] }
   },
   {
-    num: 3, maxPts: 10,
+    num: 3, maxPts: 17,
     text: 'Why Islamic School for you and your family? Why are you at ILM Academy specifically?',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 17, meets: 12, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '15\u201317', meets: '11\u201314', somewhat: '6\u201310', dnm: '0\u20135' },
+    bounds: { exceeds: [15,17], meets: [11,14], somewhat: [6,10], dnm: [0,5] }
   },
   {
-    num: 4, maxPts: 10,
+    num: 4, maxPts: 17,
     text: 'What should ILM Academy continue doing? Why?',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 17, meets: 12, somewhat: 7, dnm: 0 },
+    ranges: { exceeds: '15\u201317', meets: '11\u201314', somewhat: '6\u201310', dnm: '0\u20135' },
+    bounds: { exceeds: [15,17], meets: [11,14], somewhat: [6,10], dnm: [0,5] }
   },
   {
-    num: 5, maxPts: 10,
+    num: 5, maxPts: 16,
     text: 'What should ILM Academy do differently? Why?',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 16, meets: 11, somewhat: 6, dnm: 0 },
+    ranges: { exceeds: '14\u201316', meets: '10\u201313', somewhat: '5\u20139', dnm: '0\u20134' },
+    bounds: { exceeds: [14,16], meets: [10,13], somewhat: [5,9], dnm: [0,4] }
   },
   {
-    num: 6, maxPts: 10,
+    num: 6, maxPts: 16,
     text: 'What does governance mean to you?',
-    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
-    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+    scores: { exceeds: 16, meets: 11, somewhat: 6, dnm: 0 },
+    ranges: { exceeds: '14\u201316', meets: '10\u201313', somewhat: '5\u20139', dnm: '0\u20134' },
+    bounds: { exceeds: [14,16], meets: [10,13], somewhat: [5,9], dnm: [0,4] }
   }
 ];
 
@@ -1175,7 +1175,7 @@ const FOLLOWUP_QUESTIONS = [
     bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
   { num: 4, maxPts: 10, text: 'Question 4', placeholder: 'Type the actual question asked...',
     scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
-    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somehow: '4\u20136', dnm: '0\u20133' },
     bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
   { num: 5, maxPts: 10, text: 'Question 5', placeholder: 'Type the actual question asked...',
     scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
@@ -1184,15 +1184,31 @@ const FOLLOWUP_QUESTIONS = [
   { num: 6, maxPts: 10, text: 'Question 6', placeholder: 'Type the actual question asked...',
     scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
     ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 7, maxPts: 10, text: 'Question 7', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 8, maxPts: 10, text: 'Question 8', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 9, maxPts: 10, text: 'Question 9', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 10, maxPts: 10, text: 'Question 10', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
     bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } }
 ];
 
 // ─── Section Config ───
 const SECTIONS = {
-  interview:     { questions: INTERVIEW_QUESTIONS, containerId: 'questionsContainer', maxTotal: 100, prefix: 'int' },
-  scenario:      { questions: SCENARIO_QUESTIONS, containerId: 'scenarioQuestionsContainer', maxTotal: 10, prefix: 'scn' },
-  preinterview:  { questions: PREINTERVIEW_QUESTIONS, containerId: 'preinterviewQuestionsContainer', maxTotal: 60, prefix: 'pre' },
-  followup:      { questions: FOLLOWUP_QUESTIONS, containerId: 'followupQuestionsContainer', maxTotal: 60, prefix: 'fup' }
+  interview:     { questions: INTERVIEW_QUESTIONS, containerId: 'questionsContainer', maxTotal: 100, prefix: 'int', optional: false },
+  scenario:      { questions: SCENARIO_QUESTIONS, containerId: 'scenarioQuestionsContainer', maxTotal: 100, prefix: 'scn', optional: false },
+  preinterview:  { questions: PREINTERVIEW_QUESTIONS, containerId: 'preinterviewQuestionsContainer', maxTotal: 100, prefix: 'pre', optional: false },
+  followup:      { questions: FOLLOWUP_QUESTIONS, containerId: 'followupQuestionsContainer', maxTotal: 100, prefix: 'fup', optional: true }
 };
 
 const RATING_LABELS = {
@@ -1512,18 +1528,31 @@ function validateSection(section) {
   let valid = validateCandidateInfo();
   const cfg = SECTIONS[section];
 
-  cfg.questions.forEach(q => {
-    const card = document.getElementById(qid(section, q.num, 'card'));
-    if (!sectionState[section][q.num].rating) {
-      card.classList.add('invalid');
+  if (cfg.optional) {
+    // Optional sections: just need candidate info + at least 1 scored question
+    const answered = cfg.questions.filter(q => sectionState[section][q.num].rating).length;
+    if (answered === 0) {
+      showToast('Please score at least one question before submitting.', 'error');
       valid = false;
-    } else {
-      card.classList.remove('invalid');
     }
-  });
+  } else {
+    // Required sections: all questions must be scored
+    cfg.questions.forEach(q => {
+      const card = document.getElementById(qid(section, q.num, 'card'));
+      if (!sectionState[section][q.num].rating) {
+        card.classList.add('invalid');
+        valid = false;
+      } else {
+        card.classList.remove('invalid');
+      }
+    });
+  }
 
   if (!valid) {
-    showToast('Please fill in all required fields and score all questions.', 'error');
+    const msg = cfg.optional
+      ? 'Please fill in all required fields and score at least one question.'
+      : 'Please fill in all required fields and score all questions.';
+    showToast(msg, 'error');
     const first = document.querySelector('.field.invalid, .tab-panel.active .question-card.invalid');
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }

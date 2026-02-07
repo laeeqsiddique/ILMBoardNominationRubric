@@ -111,11 +111,11 @@ var SECTION_CONFIG = {
     sheetName: 'Follow-Up Responses',
     getHeaders: function() {
       var h = ['Timestamp', 'Candidate Name', 'Interview Date', 'Committee Member', 'Role'];
-      for (var i = 1; i <= 6; i++) {
+      for (var i = 1; i <= 10; i++) {
         h.push('Q' + i + ' Text', 'Q' + i + ' Rating', 'Q' + i + ' Score');
       }
       h.push('Total Score');
-      for (var i = 1; i <= 6; i++) {
+      for (var i = 1; i <= 10; i++) {
         h.push('Q' + i + ' Comments');
       }
       return h;
@@ -129,12 +129,12 @@ var SECTION_CONFIG = {
         'Role': data.role || '',
         'Total Score': data.totalScore || 0
       };
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < 10; i++) {
         var q = data.questions[i];
-        map['Q' + (i + 1) + ' Text'] = q.questionText || '';
-        map['Q' + (i + 1) + ' Rating'] = q.rating || '';
-        map['Q' + (i + 1) + ' Score'] = q.score || 0;
-        map['Q' + (i + 1) + ' Comments'] = q.comments || '';
+        map['Q' + (i + 1) + ' Text'] = q ? (q.questionText || '') : '';
+        map['Q' + (i + 1) + ' Rating'] = q ? (q.rating || '') : '';
+        map['Q' + (i + 1) + ' Score'] = q ? (q.score || 0) : 0;
+        map['Q' + (i + 1) + ' Comments'] = q ? (q.comments || '') : '';
       }
       return map;
     }
