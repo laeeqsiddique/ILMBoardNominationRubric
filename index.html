@@ -623,6 +623,124 @@ body {
   box-shadow: 0 0 0 3px rgba(148,0,0,0.08);
 }
 
+/* ─── Tab Navigation ─── */
+.tab-nav {
+  display: flex;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 13px 8px 11px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: var(--gray-500);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.tab-btn:hover {
+  color: var(--teal);
+  background: rgba(18,55,104,0.03);
+}
+
+.tab-btn.active {
+  color: var(--teal-dark);
+  border-bottom-color: var(--gold);
+  background: rgba(201,168,76,0.06);
+}
+
+.tab-btn + .tab-btn {
+  border-left: 1px solid var(--gray-200);
+}
+
+/* ─── Tab Panels ─── */
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* ─── Scenario Description ─── */
+.scenario-desc {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.scenario-desc h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--teal-dark);
+  margin-bottom: 10px;
+}
+
+.scenario-desc textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.9rem;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--gray-900);
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.scenario-desc textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(18,55,104,0.12);
+  background: var(--white);
+}
+
+/* ─── Follow-Up Question Text Area ─── */
+.followup-q-input {
+  padding: 0 20px 8px;
+}
+
+.followup-q-input textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  border: 1.5px dashed var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--gray-700);
+  resize: vertical;
+  min-height: 50px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.followup-q-input textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  border-style: solid;
+  box-shadow: 0 0 0 3px rgba(18,55,104,0.12);
+  background: var(--white);
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 400px) {
   .header h1 { font-size: 1.6rem; }
@@ -630,6 +748,7 @@ body {
   .rating-btn { padding: 8px 4px 7px; }
   .rating-btn .r-label { font-size: 0.67rem; }
   .submit-btn { padding: 11px 18px; font-size: 0.82rem; }
+  .tab-btn { font-size: 0.7rem; padding: 11px 4px 9px; }
 }
 </style>
 </head>
@@ -670,13 +789,42 @@ body {
     </div>
   </section>
 
-  <!-- Questions rendered by JS -->
-  <div id="questionsContainer"></div>
+  <!-- Tab Navigation -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="interview" onclick="switchTab('interview')">Interview</button>
+    <button class="tab-btn" data-tab="scenario" onclick="switchTab('scenario')">Scenario</button>
+    <button class="tab-btn" data-tab="preinterview" onclick="switchTab('preinterview')">Pre-Interview</button>
+    <button class="tab-btn" data-tab="followup" onclick="switchTab('followup')">Follow-Up</button>
+  </nav>
+
+  <!-- Tab 1: Interview (existing) -->
+  <div class="tab-panel active" id="tab-interview">
+    <div id="questionsContainer"></div>
+  </div>
+
+  <!-- Tab 2: Scenario -->
+  <div class="tab-panel" id="tab-scenario">
+    <div class="scenario-desc">
+      <h3>Scenario Description</h3>
+      <textarea id="scenarioDescription" placeholder="Discussion scenario details..."></textarea>
+    </div>
+    <div id="scenarioQuestionsContainer"></div>
+  </div>
+
+  <!-- Tab 3: Pre-Interview -->
+  <div class="tab-panel" id="tab-preinterview">
+    <div id="preinterviewQuestionsContainer"></div>
+  </div>
+
+  <!-- Tab 4: Follow-Up -->
+  <div class="tab-panel" id="tab-followup">
+    <div id="followupQuestionsContainer"></div>
+  </div>
 
 </div>
 
-<!-- Sticky Total Bar -->
-<div class="total-bar">
+<!-- Sticky Total Bar: Interview -->
+<div class="total-bar" id="totalBar-interview">
   <div class="total-bar-inner">
     <div>
       <div class="total-score-area">
@@ -687,8 +835,65 @@ body {
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <div class="answered-count" id="answeredCount">0 of 8 scored</div>
     </div>
-    <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+    <button class="submit-btn" id="submitBtn-interview" onclick="submitSection('interview')">
       <span class="btn-text">Submit Evaluation</span>
+      <span class="spinner"></span>
+    </button>
+  </div>
+</div>
+
+<!-- Sticky Total Bar: Scenario -->
+<div class="total-bar" id="totalBar-scenario" style="display:none;">
+  <div class="total-bar-inner">
+    <div>
+      <div class="total-score-area">
+        <span class="total-label">Total</span>
+        <span class="total-number" id="totalScore-scenario">0</span>
+        <span class="total-max">/ 10</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill-scenario"></div></div>
+      <div class="answered-count" id="answeredCount-scenario">0 of 1 scored</div>
+    </div>
+    <button class="submit-btn" id="submitBtn-scenario" onclick="submitSection('scenario')">
+      <span class="btn-text">Submit Scenario</span>
+      <span class="spinner"></span>
+    </button>
+  </div>
+</div>
+
+<!-- Sticky Total Bar: Pre-Interview -->
+<div class="total-bar" id="totalBar-preinterview" style="display:none;">
+  <div class="total-bar-inner">
+    <div>
+      <div class="total-score-area">
+        <span class="total-label">Total</span>
+        <span class="total-number" id="totalScore-preinterview">0</span>
+        <span class="total-max">/ 60</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill-preinterview"></div></div>
+      <div class="answered-count" id="answeredCount-preinterview">0 of 6 scored</div>
+    </div>
+    <button class="submit-btn" id="submitBtn-preinterview" onclick="submitSection('preinterview')">
+      <span class="btn-text">Submit Pre-Interview</span>
+      <span class="spinner"></span>
+    </button>
+  </div>
+</div>
+
+<!-- Sticky Total Bar: Follow-Up -->
+<div class="total-bar" id="totalBar-followup" style="display:none;">
+  <div class="total-bar-inner">
+    <div>
+      <div class="total-score-area">
+        <span class="total-label">Total</span>
+        <span class="total-number" id="totalScore-followup">0</span>
+        <span class="total-max">/ 60</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill-followup"></div></div>
+      <div class="answered-count" id="answeredCount-followup">0 of 6 scored</div>
+    </div>
+    <button class="submit-btn" id="submitBtn-followup" onclick="submitSection('followup')">
+      <span class="btn-text">Submit Follow-Up</span>
       <span class="spinner"></span>
     </button>
   </div>
@@ -701,10 +906,12 @@ body {
 // ═══════════════════════════════════════════════════════
 //  CONFIGURE THIS: Your Google Apps Script Web App URL
 // ═══════════════════════════════════════════════════════
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby787xaPOBbht_JKNkHJd6vpOZ6nzQLPZrrcSjeBs0MK7_H7DtAnTExjKhTlUdkmHZ1/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2vNAi9t363s7rUTCKUROTINm9UGIAZIeovihA-_F6dC69VIcPBNh_wxEFuI2OidzC/exec';
 // ═══════════════════════════════════════════════════════
 
-const QUESTIONS = [
+// ─── Question Definitions ───
+
+const INTERVIEW_QUESTIONS = [
   {
     num: 1, maxPts: 15,
     text: 'Describe how you incorporate Islam in your life. What formal or informal Islamic learning have you pursued?',
@@ -763,6 +970,96 @@ const QUESTIONS = [
   }
 ];
 
+const SCENARIO_QUESTIONS = [
+  {
+    num: 1, maxPts: 10,
+    text: 'Rate the candidate\u2019s response to the discussion scenario.',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  }
+];
+
+const PREINTERVIEW_QUESTIONS = [
+  {
+    num: 1, maxPts: 10,
+    text: 'Describe your volunteering experience. Where did you volunteer? In what capacity? Tell us about your volunteering experience at ILM?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 2, maxPts: 10,
+    text: 'Which of your personal traits and skills are most relevant for you as a board member?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 3, maxPts: 10,
+    text: 'Why Islamic School for you and your family? Why are you at ILM Academy specifically?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 4, maxPts: 10,
+    text: 'What should ILM Academy continue doing? Why?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 5, maxPts: 10,
+    text: 'What should ILM Academy do differently? Why?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  },
+  {
+    num: 6, maxPts: 10,
+    text: 'What does governance mean to you?',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] }
+  }
+];
+
+const FOLLOWUP_QUESTIONS = [
+  { num: 1, maxPts: 10, text: 'Question 1', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 2, maxPts: 10, text: 'Question 2', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 3, maxPts: 10, text: 'Question 3', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 4, maxPts: 10, text: 'Question 4', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 5, maxPts: 10, text: 'Question 5', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } },
+  { num: 6, maxPts: 10, text: 'Question 6', placeholder: 'Type the actual question asked...',
+    scores: { exceeds: 10, meets: 8, somewhat: 5, dnm: 0 },
+    ranges: { exceeds: '9\u201310', meets: '7\u20138', somewhat: '4\u20136', dnm: '0\u20133' },
+    bounds: { exceeds: [9,10], meets: [7,8], somewhat: [4,6], dnm: [0,3] } }
+];
+
+// ─── Section Config ───
+const SECTIONS = {
+  interview:     { questions: INTERVIEW_QUESTIONS, containerId: 'questionsContainer', maxTotal: 100, prefix: 'int' },
+  scenario:      { questions: SCENARIO_QUESTIONS, containerId: 'scenarioQuestionsContainer', maxTotal: 10, prefix: 'scn' },
+  preinterview:  { questions: PREINTERVIEW_QUESTIONS, containerId: 'preinterviewQuestionsContainer', maxTotal: 60, prefix: 'pre' },
+  followup:      { questions: FOLLOWUP_QUESTIONS, containerId: 'followupQuestionsContainer', maxTotal: 60, prefix: 'fup' }
+};
+
 const RATING_LABELS = {
   exceeds: 'Exceeds',
   meets: 'Meets',
@@ -773,22 +1070,54 @@ const RATING_LABELS = {
 const RATING_KEYS = ['exceeds', 'meets', 'somewhat', 'dnm'];
 const RATING_CLASSES = { exceeds: 'exceeds', meets: 'meets', somewhat: 'somewhat', dnm: 'dnm' };
 
-// State
-const state = {};
+// ─── Per-section State ───
+const sectionState = {};
+let activeTab = 'interview';
 
-function init() {
-  // Set today's date
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('interviewDate').value = today;
+// ─── Tab Switching ───
+function switchTab(tabName) {
+  activeTab = tabName;
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+  // Update tab panels
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    panel.classList.toggle('active', panel.id === 'tab-' + tabName);
+  });
+  // Update total bars
+  Object.keys(SECTIONS).forEach(key => {
+    document.getElementById('totalBar-' + key).style.display = (key === tabName) ? '' : 'none';
+  });
+}
 
-  const container = document.getElementById('questionsContainer');
+// ─── Generic ID helpers using section prefix ───
+function qid(section, qNum, suffix) {
+  const p = SECTIONS[section].prefix;
+  return suffix ? `${p}-${suffix}-${qNum}` : `${p}-${qNum}`;
+}
 
-  QUESTIONS.forEach(q => {
-    state[q.num] = { rating: null, score: 0, comments: '' };
+// ─── Render questions for a section ───
+function renderSection(section) {
+  const cfg = SECTIONS[section];
+  const container = document.getElementById(cfg.containerId);
+  sectionState[section] = {};
+
+  cfg.questions.forEach(q => {
+    sectionState[section][q.num] = { rating: null, ratingKey: null, score: 0, comments: '' };
+    if (section === 'followup') {
+      sectionState[section][q.num].questionText = '';
+    }
 
     const card = document.createElement('div');
     card.className = 'question-card';
-    card.id = `card-${q.num}`;
+    card.id = qid(section, q.num, 'card');
+
+    const followupInput = (section === 'followup') ? `
+      <div class="followup-q-input">
+        <textarea placeholder="${q.placeholder}" oninput="sectionState.followup[${q.num}].questionText=this.value"></textarea>
+      </div>
+    ` : '';
 
     card.innerHTML = `
       <div class="q-header">
@@ -797,157 +1126,168 @@ function init() {
         <span class="q-points-badge">${q.maxPts} pts</span>
       </div>
       <div class="q-text">${q.text}</div>
-      <div class="rating-group" id="rg-${q.num}">
+      ${followupInput}
+      <div class="rating-group" id="${qid(section, q.num, 'rg')}">
         ${RATING_KEYS.map(key => `
-          <label class="rating-btn ${RATING_CLASSES[key]}" data-q="${q.num}" data-key="${key}">
-            <input type="radio" name="q${q.num}" value="${key}">
+          <label class="rating-btn ${RATING_CLASSES[key]}" data-section="${section}" data-q="${q.num}" data-key="${key}">
+            <input type="radio" name="${qid(section, q.num)}" value="${key}">
             <span class="r-label">${RATING_LABELS[key]}</span>
             <span class="r-range">${q.ranges[key]}</span>
             <span class="r-score">${q.scores[key]}</span>
           </label>
         `).join('')}
       </div>
-      <div class="score-editor" id="editor-${q.num}">
+      <div class="score-editor" id="${qid(section, q.num, 'editor')}">
         <span class="score-editor-label">Adjust score:</span>
         <div class="score-input-wrap">
-          <input type="number" id="scoreInput-${q.num}" inputmode="numeric" pattern="[0-9]*"
+          <input type="number" id="${qid(section, q.num, 'scoreInput')}" inputmode="numeric" pattern="[0-9]*"
             min="0" max="${q.maxPts}" step="1"
-            onchange="onScoreInput(${q.num})" oninput="onScoreInput(${q.num})">
+            data-section="${section}" data-q="${q.num}"
+            onchange="onScoreInput('${section}', ${q.num})" oninput="onScoreInput('${section}', ${q.num})">
           <span class="score-input-max">/ ${q.maxPts}</span>
         </div>
-        <span class="score-range-hint" id="rangeHint-${q.num}"></span>
+        <span class="score-range-hint" id="${qid(section, q.num, 'rangeHint')}"></span>
       </div>
       <div class="q-score-display">
-        Score: <span class="score-val" id="qscore-${q.num}">-- / ${q.maxPts}</span>
+        Score: <span class="score-val" id="${qid(section, q.num, 'qscore')}">-- / ${q.maxPts}</span>
       </div>
       <div class="comments-toggle">
-        <button onclick="toggleComments(${q.num}, this)" aria-label="Toggle comments">
+        <button onclick="toggleComments('${section}', ${q.num}, this)" aria-label="Toggle comments">
           <span class="arrow">&#9654;</span> Add comments
         </button>
       </div>
-      <div class="comment-area" id="comments-${q.num}">
-        <textarea placeholder="Optional notes for this question..." oninput="state[${q.num}].comments=this.value"></textarea>
+      <div class="comment-area" id="${qid(section, q.num, 'comments')}">
+        <textarea placeholder="Optional notes for this question..." oninput="sectionState['${section}'][${q.num}].comments=this.value"></textarea>
       </div>
     `;
 
     container.appendChild(card);
   });
 
-  // Attach click handlers to rating buttons
-  document.querySelectorAll('.rating-btn').forEach(btn => {
+  // Attach click handlers for this section's rating buttons
+  container.querySelectorAll('.rating-btn').forEach(btn => {
     btn.addEventListener('click', function() {
+      const sec = this.dataset.section;
       const qNum = parseInt(this.dataset.q);
       const key = this.dataset.key;
-      selectRating(qNum, key);
+      selectRating(sec, qNum, key);
     });
   });
 }
 
-function selectRating(qNum, key) {
-  const q = QUESTIONS[qNum - 1];
+// ─── Rating Selection ───
+function selectRating(section, qNum, key) {
+  const cfg = SECTIONS[section];
+  const q = cfg.questions[qNum - 1];
   const [lo, hi] = q.bounds[key];
   const defaultScore = q.scores[key];
 
-  state[qNum].rating = RATING_LABELS[key];
-  state[qNum].ratingKey = key;
-  state[qNum].score = defaultScore;
+  sectionState[section][qNum].rating = RATING_LABELS[key];
+  sectionState[section][qNum].ratingKey = key;
+  sectionState[section][qNum].score = defaultScore;
 
   // Update button states
-  const group = document.getElementById(`rg-${qNum}`);
+  const group = document.getElementById(qid(section, qNum, 'rg'));
   group.querySelectorAll('.rating-btn').forEach(b => {
     b.classList.toggle('selected', b.dataset.key === key);
   });
 
-  // Show score editor with the default value and range
-  const editor = document.getElementById(`editor-${qNum}`);
+  // Show score editor
+  const editor = document.getElementById(qid(section, qNum, 'editor'));
   editor.classList.add('visible');
-  const input = document.getElementById(`scoreInput-${qNum}`);
+  const input = document.getElementById(qid(section, qNum, 'scoreInput'));
   input.value = defaultScore;
   input.min = lo;
   input.max = hi;
   input.classList.remove('out-of-range');
-  document.getElementById(`rangeHint-${qNum}`).textContent = `(${lo}\u2013${hi})`;
+  document.getElementById(qid(section, qNum, 'rangeHint')).textContent = `(${lo}\u2013${hi})`;
 
   // Update score display
-  document.getElementById(`qscore-${qNum}`).textContent = `${defaultScore} / ${q.maxPts}`;
+  document.getElementById(qid(section, qNum, 'qscore')).textContent = `${defaultScore} / ${q.maxPts}`;
 
-  // Mark card as scored
-  document.getElementById(`card-${qNum}`).classList.add('scored');
-  document.getElementById(`card-${qNum}`).classList.remove('invalid');
+  // Mark card
+  document.getElementById(qid(section, qNum, 'card')).classList.add('scored');
+  document.getElementById(qid(section, qNum, 'card')).classList.remove('invalid');
 
-  updateTotal();
+  updateTotal(section);
 }
 
-function onScoreInput(qNum) {
-  const q = QUESTIONS[qNum - 1];
-  const key = state[qNum].ratingKey;
+// ─── Score Input ───
+function onScoreInput(section, qNum) {
+  const cfg = SECTIONS[section];
+  const q = cfg.questions[qNum - 1];
+  const key = sectionState[section][qNum].ratingKey;
   if (!key) return;
 
-  const input = document.getElementById(`scoreInput-${qNum}`);
+  const input = document.getElementById(qid(section, qNum, 'scoreInput'));
   const [lo, hi] = q.bounds[key];
   let val = parseInt(input.value, 10);
 
-  // Show out-of-range styling but don't block typing
   if (isNaN(val) || val < lo || val > hi) {
     input.classList.add('out-of-range');
     if (!isNaN(val)) {
-      // Clamp on blur-like behavior: still update state with clamped value
       val = Math.max(lo, Math.min(hi, val));
-      state[qNum].score = val;
+      sectionState[section][qNum].score = val;
     }
   } else {
     input.classList.remove('out-of-range');
-    state[qNum].score = val;
+    sectionState[section][qNum].score = val;
   }
 
-  // Update score display
   if (!isNaN(val)) {
     const clamped = Math.max(lo, Math.min(hi, val));
-    state[qNum].score = clamped;
-    document.getElementById(`qscore-${qNum}`).textContent = `${clamped} / ${q.maxPts}`;
-    // Also snap the input if they typed out of range (on change event)
+    sectionState[section][qNum].score = clamped;
+    document.getElementById(qid(section, qNum, 'qscore')).textContent = `${clamped} / ${q.maxPts}`;
     if (val !== clamped && document.activeElement !== input) {
       input.value = clamped;
       input.classList.remove('out-of-range');
     }
   }
 
-  updateTotal();
+  updateTotal(section);
 }
 
-// Clamp value on blur so we don't leave invalid numbers
+// ─── Blur handler for score inputs ───
 document.addEventListener('focusout', function(e) {
-  if (e.target.matches('input[id^="scoreInput-"]')) {
-    const qNum = parseInt(e.target.id.replace('scoreInput-', ''), 10);
-    const q = QUESTIONS[qNum - 1];
-    const key = state[qNum].ratingKey;
+  if (e.target.matches('input[type="number"][data-section]')) {
+    const section = e.target.dataset.section;
+    const qNum = parseInt(e.target.dataset.q, 10);
+    const cfg = SECTIONS[section];
+    const q = cfg.questions[qNum - 1];
+    const key = sectionState[section][qNum].ratingKey;
     if (!key) return;
     const [lo, hi] = q.bounds[key];
     let val = parseInt(e.target.value, 10);
-    if (isNaN(val)) val = q.scores[key]; // revert to default
+    if (isNaN(val)) val = q.scores[key];
     val = Math.max(lo, Math.min(hi, val));
     e.target.value = val;
     e.target.classList.remove('out-of-range');
-    state[qNum].score = val;
-    document.getElementById(`qscore-${qNum}`).textContent = `${val} / ${q.maxPts}`;
-    updateTotal();
+    sectionState[section][qNum].score = val;
+    document.getElementById(qid(section, qNum, 'qscore')).textContent = `${val} / ${q.maxPts}`;
+    updateTotal(section);
   }
 });
 
-function updateTotal() {
+// ─── Update Total ───
+function updateTotal(section) {
+  const cfg = SECTIONS[section];
   let total = 0;
   let answered = 0;
-  QUESTIONS.forEach(q => {
-    total += state[q.num].score;
-    if (state[q.num].rating) answered++;
+  cfg.questions.forEach(q => {
+    total += sectionState[section][q.num].score;
+    if (sectionState[section][q.num].rating) answered++;
   });
-  document.getElementById('totalScore').textContent = total;
-  document.getElementById('progressFill').style.width = `${total}%`;
-  document.getElementById('answeredCount').textContent = `${answered} of 8 scored`;
+
+  const suffix = (section === 'interview') ? '' : '-' + section;
+  document.getElementById('totalScore' + suffix).textContent = total;
+  const pct = (total / cfg.maxTotal) * 100;
+  document.getElementById('progressFill' + suffix).style.width = `${pct}%`;
+  document.getElementById('answeredCount' + suffix).textContent = `${answered} of ${cfg.questions.length} scored`;
 }
 
-function toggleComments(qNum, btn) {
-  const area = document.getElementById(`comments-${qNum}`);
+// ─── Toggle Comments ───
+function toggleComments(section, qNum, btn) {
+  const area = document.getElementById(qid(section, qNum, 'comments'));
   const isVisible = area.classList.contains('visible');
   area.classList.toggle('visible');
   btn.classList.toggle('open');
@@ -955,6 +1295,7 @@ function toggleComments(qNum, btn) {
   if (!isVisible) area.querySelector('textarea').focus();
 }
 
+// ─── Toast ───
 function showToast(message, type) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
@@ -962,26 +1303,30 @@ function showToast(message, type) {
   setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
-function validate() {
+// ─── Validate Candidate Info ───
+function validateCandidateInfo() {
   let valid = true;
-
-  // Required fields
   ['candidateName', 'interviewDate', 'committeeMember'].forEach(id => {
     const field = document.getElementById(id);
     const parent = field.closest('.field');
     if (!field.value.trim()) {
       parent.classList.add('invalid');
       valid = false;
-      if (!document.querySelector('.field.invalid')) field.focus();
     } else {
       parent.classList.remove('invalid');
     }
   });
+  return valid;
+}
 
-  // All questions must be scored
-  QUESTIONS.forEach(q => {
-    const card = document.getElementById(`card-${q.num}`);
-    if (!state[q.num].rating) {
+// ─── Validate a Section ───
+function validateSection(section) {
+  let valid = validateCandidateInfo();
+  const cfg = SECTIONS[section];
+
+  cfg.questions.forEach(q => {
+    const card = document.getElementById(qid(section, q.num, 'card'));
+    if (!sectionState[section][q.num].rating) {
       card.classList.add('invalid');
       valid = false;
     } else {
@@ -991,40 +1336,53 @@ function validate() {
 
   if (!valid) {
     showToast('Please fill in all required fields and score all questions.', 'error');
-    // Scroll to first invalid
-    const first = document.querySelector('.invalid');
+    const first = document.querySelector('.field.invalid, .tab-panel.active .question-card.invalid');
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   return valid;
 }
 
-async function submitForm() {
-  if (!validate()) return;
+// ─── Submit a Section ───
+async function submitSection(section) {
+  if (!validateSection(section)) return;
 
-  const btn = document.getElementById('submitBtn');
+  const cfg = SECTIONS[section];
+  const btn = document.getElementById('submitBtn-' + section);
   btn.classList.add('loading');
   btn.disabled = true;
 
   const payload = {
+    section: section,
     candidateName: document.getElementById('candidateName').value.trim(),
     interviewDate: document.getElementById('interviewDate').value,
     committeeMember: document.getElementById('committeeMember').value.trim(),
     role: document.getElementById('role').value.trim(),
-    questions: QUESTIONS.map(q => ({
-      number: q.num,
-      maxPoints: q.maxPts,
-      rating: state[q.num].rating,
-      score: state[q.num].score,
-      comments: state[q.num].comments
-    })),
-    totalScore: QUESTIONS.reduce((sum, q) => sum + state[q.num].score, 0),
+    questions: cfg.questions.map(q => {
+      const entry = {
+        number: q.num,
+        maxPoints: q.maxPts,
+        questionText: q.text,
+        rating: sectionState[section][q.num].rating,
+        score: sectionState[section][q.num].score,
+        comments: sectionState[section][q.num].comments
+      };
+      if (section === 'followup') {
+        entry.questionText = sectionState[section][q.num].questionText || q.text;
+      }
+      return entry;
+    }),
+    totalScore: cfg.questions.reduce((sum, q) => sum + sectionState[section][q.num].score, 0),
     submittedAt: new Date().toISOString()
   };
 
+  // Include scenario description if submitting scenario
+  if (section === 'scenario') {
+    payload.scenarioDescription = document.getElementById('scenarioDescription').value.trim();
+  }
+
   if (!SCRIPT_URL) {
-    // Demo mode: log to console
-    console.log('Rubric data (no SCRIPT_URL configured):', payload);
+    console.log(`Rubric data [${section}] (no SCRIPT_URL configured):`, payload);
     setTimeout(() => {
       btn.classList.remove('loading');
       btn.disabled = false;
@@ -1034,7 +1392,7 @@ async function submitForm() {
   }
 
   try {
-    const resp = await fetch(SCRIPT_URL, {
+    await fetch(SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
@@ -1044,9 +1402,8 @@ async function submitForm() {
     btn.disabled = false;
     showToast('Evaluation submitted successfully!', 'success');
 
-    // Offer to reset
     setTimeout(() => {
-      if (confirm('Evaluation submitted. Start a new evaluation?')) resetForm();
+      if (confirm('Evaluation submitted. Reset this section for a new evaluation?')) resetSection(section);
     }, 500);
 
   } catch (err) {
@@ -1057,24 +1414,52 @@ async function submitForm() {
   }
 }
 
-function resetForm() {
-  document.getElementById('candidateName').value = '';
-  document.getElementById('role').value = '';
-  // Keep date and committee member name
-  QUESTIONS.forEach(q => {
-    state[q.num] = { rating: null, ratingKey: null, score: 0, comments: '' };
-    const card = document.getElementById(`card-${q.num}`);
+// ─── Reset a Section ───
+function resetSection(section) {
+  const cfg = SECTIONS[section];
+
+  if (section === 'scenario') {
+    document.getElementById('scenarioDescription').value = '';
+  }
+
+  cfg.questions.forEach(q => {
+    sectionState[section][q.num] = { rating: null, ratingKey: null, score: 0, comments: '' };
+    if (section === 'followup') {
+      sectionState[section][q.num].questionText = '';
+    }
+
+    const card = document.getElementById(qid(section, q.num, 'card'));
     card.classList.remove('scored', 'invalid');
     card.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
-    document.getElementById(`qscore-${q.num}`).textContent = `-- / ${q.maxPts}`;
-    document.getElementById(`editor-${q.num}`).classList.remove('visible');
-    document.getElementById(`scoreInput-${q.num}`).value = '';
-    const area = document.getElementById(`comments-${q.num}`);
-    area.classList.remove('visible');
-    area.querySelector('textarea').value = '';
+    document.getElementById(qid(section, q.num, 'qscore')).textContent = `-- / ${q.maxPts}`;
+    document.getElementById(qid(section, q.num, 'editor')).classList.remove('visible');
+    document.getElementById(qid(section, q.num, 'scoreInput')).value = '';
+
+    const commentArea = document.getElementById(qid(section, q.num, 'comments'));
+    commentArea.classList.remove('visible');
+    commentArea.querySelector('textarea').value = '';
+
+    // Reset follow-up question text areas
+    if (section === 'followup') {
+      const fuInput = card.querySelector('.followup-q-input textarea');
+      if (fuInput) fuInput.value = '';
+    }
   });
-  updateTotal();
+
+  updateTotal(section);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Initialize ───
+function init() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('interviewDate').value = today;
+
+  // Render all sections
+  Object.keys(SECTIONS).forEach(section => {
+    renderSection(section);
+    updateTotal(section);
+  });
 }
 
 init();
